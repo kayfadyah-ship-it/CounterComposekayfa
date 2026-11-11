@@ -11,6 +11,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.countercompose.ui.theme.CounterComposeTheme
 
 class MainActivity : ComponentActivity() {
@@ -19,8 +22,25 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             CounterComposeTheme {
+                val navController = rememberNavController()
+
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    CounterApp(modifier = Modifier.padding(innerPadding))
+                    NavHost(
+                        navController = navController,
+                        startDestination = "counter_screen",
+                        modifier = Modifier.padding(innerPadding)
+                    ) {
+                        composable("counter_screen") {
+                            CounterApp(
+                                onNextClick = {
+                                    navController.navigate("data_diri_screen")
+                                }
+                            )
+                        }
+                        composable("data_diri_screen") {
+                            DataDiriScreen()
+                        }
+                    }
                 }
             }
         }

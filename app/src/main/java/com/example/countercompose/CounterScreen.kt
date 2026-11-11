@@ -24,6 +24,7 @@ import com.example.countercompose.ui.theme.CounterComposeTheme
 
 @Composable
 fun CounterApp(
+    onNextClick: () -> Unit = {},
     modifier: Modifier = Modifier,
     viewModel: CounterViewModel = viewModel()
 ) {
@@ -33,6 +34,7 @@ fun CounterApp(
         onIncrement = { viewModel.increment() },
         onDecrement = { viewModel.decrement() },
         onReset = { viewModel.reset() },
+        onNextClick = onNextClick,
         modifier = modifier
     )
 }
@@ -43,6 +45,7 @@ fun CounterScreen(
     onIncrement: () -> Unit,
     onDecrement: () -> Unit,
     onReset: () -> Unit,
+    onNextClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -65,7 +68,8 @@ fun CounterScreen(
         CounterButtons(
             onDecrement = onDecrement,
             onIncrement = onIncrement,
-            onReset = onReset
+            onReset = onReset,
+            onNextClick = onNextClick
         )
     }
 }
@@ -99,7 +103,9 @@ fun CounterDisplay(value: Int, modifier: Modifier = Modifier) {
 fun CounterButtons(
     onDecrement: () -> Unit = {},
     onIncrement: () -> Unit = {},
-    onReset: () -> Unit = {}
+    onReset: () -> Unit = {},
+    onNextClick: () -> Unit = {}
+
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Row(
@@ -154,6 +160,15 @@ fun CounterButtons(
             Spacer(Modifier.width(ButtonDefaults.IconSpacing))
             Text("RESET")
         }
+
+        Spacer(modifier = Modifier.height(8.dp))
+        Button(
+            onClick = onNextClick,
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF673AB7))
+        ) {
+            Text("Next")
+        }
     }
 }
 
@@ -165,7 +180,8 @@ fun CounterScreenPreview() {
             counter = 7,
             onIncrement = {},
             onDecrement = {},
-            onReset = {}
+            onReset = {},
+            onNextClick = {}
         )
     }
 }
